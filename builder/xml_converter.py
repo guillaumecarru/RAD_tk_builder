@@ -2,7 +2,7 @@
 # class taken from stackoverflow topic                                                      #
 # https://stackoverflow.com/questions/2148119/how-to-convert-an-xml-string-to-a-dictionary  #
 # inspired by Adam Clark, wrote by "tiger"                                                  #
-# Special thanks to him for letting me use for my program                                   #
+# Special thanks to him for letting me use it for my program                                #
 #############################################################################################
 
 class XmlDictConfig(dict):
