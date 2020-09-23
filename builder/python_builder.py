@@ -9,18 +9,40 @@ import errno
 
 try:
     from builder.xml_converter import XmlDictConfig
-    from builder.conf import FILEERROR, ATTRIBERROR
+    from builder.conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE
+    from builder.file_constructor import FileConstructor
 except:
     from xml_converter import XmlDictConfig
-    from conf import FILEERROR, ATTRIBERROR
+    from conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE
+    from file_constructor import FileConstructor
 
-class ParseIntoCreate(object):
-    ''' Usage (write it down when it's all over)
+class ParseIntoCreate:
+    '''
+    This class is meant to create a tkinter code.
+    It takes as argument uifile a .ui file, created on pygubu-designer
+    It will convert and create a new document coded in python in newfile
+
+    if you don't give uifile any argument, it will load a default template
+    you can consult in your target path.
+
+    newfile is the file that's going to be created.
+
+    defaultconf is the file that will include all variables for newfile.
+
+    For more informations, please consult the README.md file.
+    Have fun !
     '''
 
-    def __init__(self, uifile):
+    def __init__(self, newfile, uifile="tests/template_ui_file.ui", defaultconf="conf.py"):
+        # newfile is the file that this class will create
+        self.newfile = newfile
+
         # ui file is the file that's going to be converted
-        self.uifile=uifile
+        self.uifile = uifile
+
+        # defaultconf is the file that will be created and will include all
+        # variables for newfile
+        self.defaultconf = defaultconf
 
         # getting all informations from ui file
         try:
@@ -31,6 +53,7 @@ class ParseIntoCreate(object):
             #if file isn't an xml file
             if er.errno == errno.ENOENT:
                 print(FILEERROR)
+                return
 
         try:
             # Converting xml data into dictionnary
@@ -41,6 +64,13 @@ class ParseIntoCreate(object):
         except UnboundLocalError:
             # if file can't be read
             print(ATTRIBERROR)
+            return
+
+        # Loading constructor class
+        self.constructor = FileConstructor()
+
+        # Converting object into dictionnary
+        self.creating_new_dicts()
 
     def creating_new_dicts(self):
         ''' This function is taking data inside xmldict
@@ -67,12 +97,17 @@ class ParseIntoCreate(object):
         as database
         '''
 
+        # Fullfilling self.newfile with data
+        with open(self.newfile, "w") as newdoc:
+            #Documentation
+            newdoc.write(self.constructor.create_stock_class(self.defaultconf))
 
+            #Creating class and init
+            newdoc.write(self.constructor.create_class_and_init(DEFAULTTITLE))
 
-    def testing_xmldict_working(self):
-        print(self.xmldict)
+        newdoc.close()
 
 if __name__ == '__main__':
     # test to make sure everything is working properly
-    parser = ParseIntoCreate("tests/template_ui_file.ui")
+    parser = ParseIntoCreate("newdocument.py", "tests/template_ui_file.ui")
     parser.testing_xmldict_working()
