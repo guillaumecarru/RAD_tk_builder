@@ -1,5 +1,5 @@
 {
     "introduction":"import tkinter as tk\n\n# all strings are located in that file\nimport {}\n",
-    "classcreation":"\nclass ConvertedFile(tk.Tk):\n    \"\"\"To activate this tkinter window, instanciate it, then use the launch() function on\n    your object\"\"\"\n\n    def __init__(self):\n        # Building main window\n        tk.Tk.__init__(self)\n        self.title({})",
-    "":""
+    "classcreation":"\nclass ConvertedFile(tk.Tk):\n    \"\"\"To activate this tkinter window, instanciate it, then use the launch() function on\n    your object\"\"\"\n\n    def __init__(self):\n        # Building main window\n        tk.Tk.__init__(self)\n        self.title({})\n\n",
+    "addfunction":"        # Add {} as master\n        {}()\n\n"
 }

@@ -22,7 +22,7 @@ class FileConstructor:
         It also adds variables with an import.
 
         arg1 = file of variables for new document
-
+n
         '''
 
         return self.data["introduction"].format(arg1)
@@ -41,3 +41,20 @@ class FileConstructor:
         else:
             return self.data["classcreation"].format("")
 
+    def add_function_to_init(self, arg1):
+        '''
+        This function adds function in init so it launches itself at start
+
+        arg1 is the name of the function.
+        arg1 should look like : self.add_"function_name"
+
+        '''
+
+        return self.data["addfunction"].format(arg1, arg1)
+
+
+
+if __name__ == '__main__':
+    print("This is a constructor class, made for ParseIntoCreate class. \
+For more informations on how to use this program, please consult README.md \
+file")
