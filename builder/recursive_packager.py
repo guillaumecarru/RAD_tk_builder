@@ -60,15 +60,21 @@ class RecursivePackager:
         if isinstance(self.arg_dict["object"], list):
             for widgets in self.arg_dict["object"]:
                 # Add id valor
-                list_for_current_iteration.append(self.arg_dict["object"]["id"])
+                if "id" not in widgets:
+                    list_for_current_iteration.append("")
+                elif "id" in widgets:
+                    list_for_current_iteration.append(widgets["id"])
 
                 # Add class valor
-                list_for_current_iteration.append(self.arg_dict["object"]["class"])
+                list_for_current_iteration.append(widgets["class"])
 
                 # Add properties valors
-                list_for_current_iteration.append(self.creating_properties_valors(self.arg_dict["object"]["property"]))
+                if "properties" in widgets:
+                    list_for_current_iteration.append(self.creating_properties_valors(widgets["property"]))
+
+                if "layout" in self.arg_dict["object"]:
+                    list_for_current_iteration.append(self.creating_layout_valors(widgets["layout"]))
             #bla bla
-            print("ok")
         for valor in self.arg_dict:
             if "version" in valor and "object" in valor:
                 print("ok")
@@ -87,36 +93,44 @@ class RecursivePackager:
         if isinstance(dict_or_list, list):
             #If it's a list
             for properties in dict_or_list:
-                # Need to change this
-                creating_properties += self.loop_for_properties_valors(properties) + ", "
+                # if list is not empty and properties does NOT contain text
+                if creating_properties and properties["name"] != "text":
+                    creating_properties[0] += ", {}='{}'".format(properties["name"],
+                                                                 properties["property"])
+
+                # if list is not empty and properties does contain text
+                elif creating_properties and properties["name"] == "text":
+                    creating_properties[0] = properties["name"] + "={}, " + creating_properties[0]
+                    creating_properties.append(properties["property"])
+
+                # If list is empty and properties does NOT contain text
+                elif not creating_properties and properties["name"] != "text":
+                    creating_properties.append("{}='{}'".format(properties["name"],
+                                                                properties["property"]))
+
+                #if list is empty and properties contains text
+                elif not creating_properties and properties["name"] == "text":
+                    creating_properties.append(properties["name"] +"={}")
+                    creating_properties.append(properties["property"])
+
+            #After the loop, returns the list
             return creating_properties
 
-        #If it's a dict
+        # if dict_or_list is a dict and name contains text
+        if dict_or_list["name"] == "text":
+            creating_properties.append(dict_or_list["name"] + "={}")
+            creating_properties.append(dict_or_list["property"])
+
+        # if dict_or_list is a dict and name does NOT contains text
         else:
-            creating_properties += self.loop_for_properties_valors(dict_or_list)
+            creating_properties.append("{}='{}'".format(dict_or_list["name"],
+                                                        dict_or_list["property"]))
+
+        #After giving all informations from the dict, returning the list
         return creating_properties
 
-    def loop_for_properties_valors(self, dictio_properties):
-        '''
-        This function is used by creating_properties_valors function
-        It takes dictionnary, parses it, and returns a fonctionnal code
-        out of it.
-        '''
-        # Creating temporary string
-        temp_stock = ""
-        temp_list = []
-
-        for valors in dictio_properties:
-            if valors["translatable"]:
-                temp_stock = valors["name"] + " = "
-                temp_list.append(temp_stock)
-                temp_list.append(valors["property"])
-                return temp_list
-            else:
-                temp_stock = valors["name"] + " = "
-                temp_stock += valors["property"]
-                temp_list.append(temp_stock)
-                return temp_list
+    def creating_layout_valors(self, dict_or_list):
+        print(dict_or_list)
 
 if __name__ == '__main__':
     pass
