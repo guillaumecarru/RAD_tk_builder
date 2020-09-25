@@ -58,8 +58,6 @@ class ParseIntoCreate:
         try:
             # Converting xml data into dictionnary
             self.xmldict = XmlDictConfig(root)
-            # Removing useless informations
-            self.xmldict = self.xmldict["object"]
 
         except UnboundLocalError:
             # if file can't be read
@@ -106,6 +104,13 @@ class ParseIntoCreate:
             newdoc.write(self.constructor.create_class_and_init(DEFAULTTITLE))
 
         newdoc.close()
+
+    def testing_xmldict_working(self):
+        '''
+        Testing if init is working properly
+        This test function should be deleted
+        '''
+        print(self.realdict)
 
 if __name__ == '__main__':
     # test to make sure everything is working properly
