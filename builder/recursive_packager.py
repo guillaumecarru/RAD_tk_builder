@@ -83,7 +83,7 @@ class RecursivePackager:
 
     def creating_properties_valors(self, dict_or_list):
         '''
-        This function converts dictionnary into writable code
+        This function converts dictionnary "properties" into writable code
         '''
 
         # list that will stock informations and give it to list_for_current_iteration
@@ -130,7 +130,15 @@ class RecursivePackager:
         return creating_properties
 
     def creating_layout_valors(self, dict_or_list):
-        print(dict_or_list)
+        '''
+        This function converts dictionnary "valors" into writable code
+        '''
+
+        # list that will stock informations and give it to
+        # list_for_current_iteration
+        creating_layout = []
+
+        
 
 if __name__ == '__main__':
     pass
