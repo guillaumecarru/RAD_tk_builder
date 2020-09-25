@@ -72,14 +72,12 @@ class RecursivePackager:
                 if "properties" in widgets:
                     list_for_current_iteration.append(self.creating_properties_valors(widgets["property"]))
 
-                if "layout" in self.arg_dict["object"]:
-                    list_for_current_iteration.append(self.creating_layout_valors(widgets["layout"]))
-            #bla bla
-        for valor in self.arg_dict:
-            if "version" in valor and "object" in valor:
-                print("ok")
-
-        print("ok")
+                list_for_current_iteration.append(self.creating_layout_valors(widgets["layout"]))
+        # If it's a dict
+        if isinstance(self.arg_dict["object"], dict):
+            for valor in self.arg_dict:
+                if "version" in valor and "object" in valor:
+                    print("ok")
 
     def creating_properties_valors(self, dict_or_list):
         '''
@@ -129,7 +127,7 @@ class RecursivePackager:
         #After giving all informations from the dict, returning the list
         return creating_properties
 
-    def creating_layout_valors(self, dict_or_list):
+    def creating_layout_valors(self, layout_data):
         '''
         This function converts dictionnary "valors" into writable code
         '''
@@ -138,7 +136,45 @@ class RecursivePackager:
         # list_for_current_iteration
         creating_layout = []
 
-        
+        # Adding grid, place or pack on top of returning list
+        creating_layout.append(layout_data["manager"])
+
+        if "property" in layout_data:
+            if isinstance(layout_data["property"], list):
+                for properties in layout_data["property"]:
+                    if layout_data["name"] == "propagate":
+                        if properties["property"] == "False":
+                            creating_layout.append("{}_propagate(0)".format(layout_data["manager"]))
+                    elif layout_data["name"] != "propagate":
+                        if creating_layout:
+                            creating_layout[0] += ", {}='{}'".format(properties["name"],
+                                                                     properties["property"])
+                        else:
+                            creating_layout[0] += "({}='{}'".format(properties["name"],
+                                                                    properties["property"])
+                # Finally close ) of creating_layout[0]
+                creating_layout[0] += ")"
+
+            if isinstance(layout_data["property"], dict):
+                if layout_data["name"] == "propagate":
+                    # If propagate = True
+                    if layout_data["property"] == "True":
+                        creating_layout[0] += "()"
+                    # If propagate = False
+                    elif layout_data["property"] == "False":
+                        creating_layout[0] += "()"
+                        creating_layout.append("{}_propagate(0)".format(layout_data["manager"]))
+                # If name is not propagate
+                elif layout_data["name"] != "propagate":
+                    creating_layout[0] += "({}='{}')".format(layout_data["name"],
+                                                             layout_data["property"])
+
+        # If no properties for layout, then close args
+        if not "property" in layout_data:
+            creating_layout[0] += "()"
+
+        # After fulfilling informations, returning the list
+        return creating_layout
 
 if __name__ == '__main__':
     pass
