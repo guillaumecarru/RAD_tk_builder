@@ -20,6 +20,14 @@ class RecursivePackager:
         # This list is going to be returned with all informations parsed
         self.returned_list = []
 
+        # This list contains all widgets that are on the same tree place.
+        # It first contains self.arg_dict, then will contain any child
+        # arg_dict has.
+        self.running_list = []
+
+        while self.running_list:
+            self.recursive_list_creator(self.running_list[0])
+
     def recursive_list_creator(self, master_widget=""):
         '''
         This is the main function of the class.
@@ -49,35 +57,74 @@ class RecursivePackager:
         properties_valors are always lists, even if there is no text.
         '''
 
-        # This list will be fulfilled during that iteration
-        # And added to
-        list_for_current_iteration = []
-
-        # Adding master's widget. Default = none
-        list_for_current_iteration.append(master_widget)
-
         # Check if it's dictionnary or list
         if isinstance(self.arg_dict["object"], list):
-            for widgets in self.arg_dict["object"]:
-                # Add id valor
-                if "id" not in widgets:
-                    list_for_current_iteration.append("")
-                elif "id" in widgets:
-                    list_for_current_iteration.append(widgets["id"])
+            for args in self.arg_dict["object"]:
 
-                # Add class valor
-                list_for_current_iteration.append(widgets["class"])
+                # List for current iteration
+                current_iteration = []
 
-                # Add properties valors
-                if "properties" in widgets:
-                    list_for_current_iteration.append(self.creating_properties_valors(widgets["property"]))
+                # Adding master's widget. Default = none
+                current_iteration.append(master_widget)
 
-                list_for_current_iteration.append(self.creating_layout_valors(widgets["layout"]))
-        # If it's a dict
+                # If it's a dict
+                list_temp = self.widget_list_compacter(args)
+
+                for val in list_temp:
+                    current_iteration.append(val)
+
+                # Adding informations to returned_list
+                self.returned_list.append(current_iteration)
+
+                # Add child to self.running_list if any
+                self.running_list.append()
+
         if isinstance(self.arg_dict["object"], dict):
-            for valor in self.arg_dict:
-                if "version" in valor and "object" in valor:
-                    print("ok")
+            list_temp = self.widget_list_compacter(self.arg_dict["object"])
+
+            # List for current iteration
+            current_iteration = []
+
+            # Adding master's widget. Default = none
+            current_iteration.append(master_widget)
+
+
+            for val in list_temp:
+                current_iteration.append(val)
+            # Adding informations to returned_list
+            self.returned_list.append(current_iteration)
+
+    def widget_list_compacter(self, dictio):
+        '''
+        This function take dictio as arg, and creates a fully fonctionnal list
+        out of it
+
+        dictio should be one full instance of a widget and contain "id" and
+        "layout" valors.
+        '''
+        # Temporary list that will stock informations and return them once
+        # gathered
+        list_for_current_iteration = []
+
+        # Add id valor
+        if "id" not in dictio:
+            list_for_current_iteration.append("")
+        elif "id" in dictio:
+            list_for_current_iteration.append(dictio["id"])
+
+        # Add class valor
+        list_for_current_iteration.append(dictio["class"])
+
+        # Add properties valors
+        if "properties" in dictio:
+            list_for_current_iteration.append(self.creating_properties_valors(dictio["property"]))
+        elif not "properties" in dictio:
+            list_for_current_iteration.append([])
+
+        list_for_current_iteration.append(self.creating_layout_valors(dictio["layout"]))
+
+        # Returning temporary dictionnary
+        return list_for_current_iteration
 
     def creating_properties_valors(self, dict_or_list):
         '''
@@ -98,30 +145,31 @@ class RecursivePackager:
 
                 # if list is not empty and properties does contain text
                 elif creating_properties and properties["name"] == "text":
-                    creating_properties[0] = properties["name"] + "={}, " + creating_properties[0]
+                    creating_properties[0] += ", " + properties["name"] + "='{}'"
                     creating_properties.append(properties["property"])
 
                 # If list is empty and properties does NOT contain text
                 elif not creating_properties and properties["name"] != "text":
-                    creating_properties.append("{}='{}'".format(properties["name"],
+                    creating_properties.append("({}='{}'".format(properties["name"],
                                                                 properties["property"]))
 
                 #if list is empty and properties contains text
                 elif not creating_properties and properties["name"] == "text":
-                    creating_properties.append(properties["name"] +"={}")
+                    creating_properties.append("(" + properties["name"] + "={}")
                     creating_properties.append(properties["property"])
 
             #After the loop, returns the list
+            creating_properties[0] += ")"
             return creating_properties
 
         # if dict_or_list is a dict and name contains text
         if dict_or_list["name"] == "text":
-            creating_properties.append(dict_or_list["name"] + "={}")
+            creating_properties.append("(" + dict_or_list["name"] + "={})")
             creating_properties.append(dict_or_list["property"])
 
         # if dict_or_list is a dict and name does NOT contains text
         else:
-            creating_properties.append("{}='{}'".format(dict_or_list["name"],
+            creating_properties.append("({}='{}')".format(dict_or_list["name"],
                                                         dict_or_list["property"]))
 
         #After giving all informations from the dict, returning the list
