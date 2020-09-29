@@ -79,6 +79,9 @@ class ParseIntoCreate:
         out in the new file.
         '''
 
+        # removing useless data
+        self.xmldict = self.xmldict["object"]
+
         # Creating a new dictionnary from self.xmldict
         # xmldict is actually an instance of XmlDictConfig
         # class, and by no mean a dictionnary

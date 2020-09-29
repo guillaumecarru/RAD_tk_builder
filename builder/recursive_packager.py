@@ -23,15 +23,17 @@ class RecursivePackager:
         # This list contains all widgets that are on the same tree place.
         # It first contains self.arg_dict, then will contain any child
         # arg_dict has.
-        self.running_list = []
+        self.running_list = [arg_dict]
+        # self.master_list works with self.running_list.
+        # It helps giving master widget to recursive_list_creator function
+        self.master_list = [""]
+        #Launching recursive function
+        self.recursive_list_creator(self.running_list[0], self.master_list)
 
-        while self.running_list:
-            self.recursive_list_creator(self.running_list[0])
-
-    def recursive_list_creator(self, master_widget=""):
+    def recursive_list_creator(self, curr_dict_iteration, master_widget):
         '''
         This is the main function of the class.
-        It allows to convert arg_dict into a list.
+        It allows to convert curr_iteration into a list.
 
         master_widget is the master's widget id. Usefull for writing objects.
 
@@ -58,8 +60,8 @@ class RecursivePackager:
         '''
 
         # Check if it's dictionnary or list
-        if isinstance(self.arg_dict["object"], list):
-            for args in self.arg_dict["object"]:
+        if isinstance(curr_dict_iteration, list):
+            for args in curr_dict_iteration:
 
                 # List for current iteration
                 current_iteration = []
@@ -68,7 +70,7 @@ class RecursivePackager:
                 current_iteration.append(master_widget)
 
                 # If it's a dict
-                list_temp = self.widget_list_compacter(args)
+                list_temp = self.widget_list_compacter(args["object"])
 
                 for val in list_temp:
                     current_iteration.append(val)
@@ -76,11 +78,10 @@ class RecursivePackager:
                 # Adding informations to returned_list
                 self.returned_list.append(current_iteration)
 
-                # Add child to self.running_list if any
-                self.running_list.append()
-
-        if isinstance(self.arg_dict["object"], dict):
-            list_temp = self.widget_list_compacter(self.arg_dict["object"])
+        if isinstance(curr_dict_iteration, dict):
+            if "object" in curr_dict_iteration:
+                curr_dict_iteration = curr_dict_iteration["object"]
+            list_temp = self.widget_list_compacter(curr_dict_iteration)
 
             # List for current iteration
             current_iteration = []
@@ -93,6 +94,13 @@ class RecursivePackager:
                 current_iteration.append(val)
             # Adding informations to returned_list
             self.returned_list.append(current_iteration)
+
+        # deleting current iteration
+        del self.running_list[0]
+        del self.master_list[0]
+        # Recursive loop launched
+        while self.running_list:
+            self.recursive_list_creator(self.running_list[0], self.master_list[0])
 
     def widget_list_compacter(self, dictio):
         '''
@@ -116,12 +124,20 @@ class RecursivePackager:
         list_for_current_iteration.append(dictio["class"])
 
         # Add properties valors
-        if "properties" in dictio:
+        if "property" in dictio:
             list_for_current_iteration.append(self.creating_properties_valors(dictio["property"]))
-        elif not "properties" in dictio:
+        elif not "property" in dictio:
             list_for_current_iteration.append([])
 
-        list_for_current_iteration.append(self.creating_layout_valors(dictio["layout"]))
+        if "layout" in dictio:
+            list_for_current_iteration.append(self.creating_layout_valors(dictio["layout"]))
+
+        # Adding to running_list and master_list dictionnaries / lists to
+        # continue the recursive loop
+        if "child" in dictio:
+            self.running_list.append(dictio["child"])
+            self.master_list.append(dictio["id"])
+
 
         # Returning temporary dictionnary
         return list_for_current_iteration
@@ -151,7 +167,7 @@ class RecursivePackager:
                 # If list is empty and properties does NOT contain text
                 elif not creating_properties and properties["name"] != "text":
                     creating_properties.append("({}='{}'".format(properties["name"],
-                                                                properties["property"]))
+                                                                 properties["property"]))
 
                 #if list is empty and properties contains text
                 elif not creating_properties and properties["name"] == "text":
@@ -170,7 +186,7 @@ class RecursivePackager:
         # if dict_or_list is a dict and name does NOT contains text
         else:
             creating_properties.append("({}='{}')".format(dict_or_list["name"],
-                                                        dict_or_list["property"]))
+                                                          dict_or_list["property"]))
 
         #After giving all informations from the dict, returning the list
         return creating_properties
@@ -189,33 +205,32 @@ class RecursivePackager:
 
         if "property" in layout_data:
             if isinstance(layout_data["property"], list):
+                creating_layout[0] += "("
                 for properties in layout_data["property"]:
-                    if layout_data["name"] == "propagate":
+                    if properties["name"] == "propagate":
                         if properties["property"] == "False":
                             creating_layout.append("{}_propagate(0)".format(layout_data["manager"]))
-                    elif layout_data["name"] != "propagate":
+                    elif properties["name"] != "propagate":
                         if creating_layout:
-                            creating_layout[0] += ", {}='{}'".format(properties["name"],
+                            creating_layout[0] += "{}='{}', ".format(properties["name"],
                                                                      properties["property"])
-                        else:
-                            creating_layout[0] += "({}='{}'".format(properties["name"],
-                                                                    properties["property"])
                 # Finally close ) of creating_layout[0]
-                creating_layout[0] += ")"
+                # Remove , and space from loop above
+                creating_layout[0] = creating_layout[0][:-2] + ")"
 
-            if isinstance(layout_data["property"], dict):
-                if layout_data["name"] == "propagate":
+            elif isinstance(layout_data["property"], dict):
+                if layout_data["property"]["name"] == "propagate":
                     # If propagate = True
-                    if layout_data["property"] == "True":
+                    if layout_data["property"]["property"] == "True":
                         creating_layout[0] += "()"
                     # If propagate = False
-                    elif layout_data["property"] == "False":
+                    elif layout_data["property"]["property"] == "False":
                         creating_layout[0] += "()"
                         creating_layout.append("{}_propagate(0)".format(layout_data["manager"]))
                 # If name is not propagate
-                elif layout_data["name"] != "propagate":
-                    creating_layout[0] += "({}='{}')".format(layout_data["name"],
-                                                             layout_data["property"])
+                elif layout_data["property"]["name"] != "propagate":
+                    creating_layout[0] += "({}='{}')".format(layout_data["property"]["name"],
+                                                             layout_data["property"]["property"])
 
         # If no properties for layout, then close args
         if not "property" in layout_data:
@@ -223,6 +238,13 @@ class RecursivePackager:
 
         # After fulfilling informations, returning the list
         return creating_layout
+
+    def return_converted_list(self):
+        '''
+        This function returns self.returned_list
+        '''
+
+        return self.returned_list
 
 if __name__ == '__main__':
     pass
