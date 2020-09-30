@@ -11,10 +11,12 @@ try:
     from builder.xml_converter import XmlDictConfig
     from builder.conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE
     from builder.file_constructor import FileConstructor
+    from builder.recursive_packager import RecursivePackager
 except:
     from xml_converter import XmlDictConfig
     from conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE
     from file_constructor import FileConstructor
+    from recursive_packager import RecursivePackager
 
 class ParseIntoCreate:
     '''
@@ -93,7 +95,8 @@ class ParseIntoCreate:
             self.realdict[keys] = self.xmldict[keys]
 
     def creating_new_file(self):
-        '''This function takes self.realdict datas
+        '''
+        This function takes self.realdict datas
         and converts them into code, using conf.py file
         as database
         '''
@@ -108,14 +111,22 @@ class ParseIntoCreate:
 
         newdoc.close()
 
-    def testing_xmldict_working(self):
+    def creating_functions_for_new_file(self):
         '''
-        Testing if init is working properly
-        This test function should be deleted
+        This function helps creating_new_file function.
+        It launches RecursivePackager class, and parses result
+        to create multiple functions if needed for the new file
         '''
-        print(self.realdict)
+        # maybe add self. after reallist
+        reallist = RecursivePackager(self.realdict)
+        reallist = reallist.return_converted_list()
+
+        print(reallist)
+        # loop for function detection
+        #for val in reallist:
+
 
 if __name__ == '__main__':
     # test to make sure everything is working properly
     parser = ParseIntoCreate("newdocument.py", "tests/template_ui_file.ui")
-    parser.testing_xmldict_working()
+    parser.creating_functions_for_new_file()
