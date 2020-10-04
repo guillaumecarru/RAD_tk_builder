@@ -193,7 +193,7 @@ class RecursivePackager:
 
     def creating_layout_valors(self, layout_data):
         '''
-        This function converts dictionnary "valors" into writable code
+        This function converts dictionnary/list "valors" into writable code
         '''
 
         # list that will stock informations and give it to

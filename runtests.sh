@@ -1,3 +1,7 @@
 # to run test, simply type bash runtest.sh
 
-python -m pytest tests/
+# To run pytest alone, run the command below
+#python -m pytest tests/
+
+# By default, it will launch coverage
+coverage run -m pytest
