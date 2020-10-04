@@ -41,7 +41,7 @@ n
         else:
             return self.data["classcreation"].format("")
 
-    def add_function_to_init(self, arg1):
+    def add_main_widget_function_to_init(self, arg1):
         '''
         This function adds function in init so it launches itself at start
 

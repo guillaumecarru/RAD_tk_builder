@@ -78,7 +78,7 @@ class RecursivePackager:
                 # Adding informations to returned_list
                 self.returned_list.append(current_iteration)
 
-        if isinstance(curr_dict_iteration, dict):
+        elif isinstance(curr_dict_iteration, dict):
             if "object" in curr_dict_iteration:
                 curr_dict_iteration = curr_dict_iteration["object"]
             list_temp = self.widget_list_compacter(curr_dict_iteration)
