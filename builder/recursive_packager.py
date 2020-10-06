@@ -131,6 +131,9 @@ class RecursivePackager:
 
         if "layout" in dictio:
             list_for_current_iteration.append(self.creating_layout_valors(dictio["layout"]))
+        elif not "layout" in dictio:
+            list_for_current_iteration.append([])
+
 
         # Adding to running_list and master_list dictionnaries / lists to
         # continue the recursive loop
@@ -161,7 +164,7 @@ class RecursivePackager:
 
                 # if list is not empty and properties does contain text
                 elif creating_properties and properties["name"] == "text":
-                    creating_properties[0] += ", " + properties["name"] + "='{}'"
+                    creating_properties[0] += ", " + properties["name"] + "={}"
                     creating_properties.append(properties["property"])
 
                 # If list is empty and properties does NOT contain text

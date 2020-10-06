@@ -76,6 +76,12 @@ class ParseIntoCreate:
         self.real_list = RecursivePackager(self.realdict)
         self.real_list = self.real_list.return_converted_list()
 
+        # dictionnary of text for conf.py file
+        # List valors goes like this : [["LABEL_FRAME_TEXT", "some text"],
+        #                               ...
+        #                              ]
+        self.conf_text = []
+
 
     def creating_new_dicts(self):
         ''' This function is taking data inside xmldict
@@ -122,25 +128,119 @@ class ParseIntoCreate:
                 # and instanciates from tk()
                 if widgets[1]:
                     newdoc.write(self.constructor.add_main_widget_function_to_init(widgets[0]))
-                    # Continue later on
-                    # newdoc.write a new function of self.constructor for main
-                    # widget
+                    newdoc.write(self.constructor.add_widgets_to_master_widgets_func(widgets[0]))
+                else:
+                    newdoc.write(self.constructor.add_widgets_to_master_widgets_func(widgets[0]))
+            # Creating functions, fulfilling them
 
-                    # Followed by
-                    #if not widgets[1]:
-                        # newdoc.write the new function.
+            # Know which widgets gets two functions passes
+            for widgets in widget_list:
+                # If widgets[0] is an instance of Tk()
+                if widgets[1]:
+                    # Create master widget in its own function
+                    self.creating_function(self.who_s_your_master(widgets[0], True),
+                                           newdoc,
+                                           True)
+                # Add slave widgets
+                self.creating_function(self.who_s_your_master(widgets[0]),
+                                       newdoc)
 
         newdoc.close()
 
-    def creating_functions_for_new_file(self, newdoc):
+    def who_s_your_master(self, arg1, master=False):
+        '''
+        This function takes arg1, parses self.real_list and
+        returns a list only containing widgets that have arg1
+        as master.
+
+        Optionnal argument as "master" is given if we're looking
+        for all informations of arg1 only.
+        '''
+
+        new_list = []
+
+        # If arg1 is instance of Tk()
+        if master:
+            for widgets in self.real_list:
+                if arg1 == widgets[1]:
+                    new_list.append(widgets)
+
+        # If we're looking for all widgets that arg1 has
+        elif not master:
+            for widgets in self.real_list:
+                if arg1 == widgets[0]:
+                    new_list.append(widgets)
+
+        # Return new_list once completed
+        return new_list
+
+
+    def creating_function(self, list_widgets, document, master=False):
         '''
         This function helps creating_new_file function.
         It parses RecursivePackager result to create
-        multiple functions if needed for the new file
+        a function for the new file
+
+        Change master to True ONLY if you need to create
+        a master function.
         '''
-        pass
+
+        # If master = True
+        # Unique case
+        if master:
+            document.write(self.constructor.add_master_function(list_widgets[0][1]))
+
+        elif not master:
+            document.write(self.constructor.add_widgets_function(list_widgets[0][0]))
+
+        # Create loop, adding all widgets in list_widgets inside the function
+        for widgets in list_widgets:
+            # Add id and class for current widget
+            # if master = True, no arg3
+            if master:
+                document.write(self.constructor.add_identify_id_class_master(widgets[1],
+                                                                             widgets[2]))
+
+            # Add arg3 if master = False
+            elif not master:
+                document.write(self.constructor.add_identify_id_class_master(widgets[1],
+                                                                             widgets[2],
+                                                                             widgets[0]))
 
 
+            if widgets[3]:
+                # if there is text in properties
+                if len(widgets[3]) > 1:
+                    self.conf_text.append([self.cap_text(widgets[1]), widgets[3][1]])
+                    document.write(self.constructor.add_widget_conf(widgets[1],
+                                                                    widgets[3][0].format(self.cap_text(widgets[1]))))
+
+                elif len(widgets[3]) == 1:
+                    document.write(self.constructor.add_widget_conf(widgets[1],
+                                                                    widgets[3][0]))
+
+            if widgets[4]:
+                document.write(self.constructor.add_widget_loc(widgets[1],
+                                                               widgets[4][0]))
+                # If _propagate == False
+                # Add place_propagate(0)
+                if len(widgets[4]) > 1:
+                    document.write(self.constructor.add_widget_loc(widgets[1],
+                                                                   widgets[4][1]))
+
+            # Add spaces between widgets / functions
+            # for each iteration
+            document.write("\n")
+
+
+    def cap_text(self, arg):
+        '''
+        This function takes arg and converts it to ARG_TEXT
+
+        This function is usefull for the conf.py text.
+        '''
+
+        return arg.upper() + "_TEXT"
 
     def getting_master_widgets(self):
         '''
@@ -155,17 +255,13 @@ class ParseIntoCreate:
 
         '''
 
-        list_valors = []
         return_list = []
 
         # Loop that gets all master widgets
         for valors in self.real_list:
-            list_valors.append(valors[0])
-            if valors[0] in list_valors:
-                if valors[0] not in return_list:
-                    return_list.append(valors[0])
+            if valors[0]not in return_list:
+                return_list.append(valors[0])
 
-        # Reseting list_valors
         list_valors = []
 
         # Checking which widget is main widget.
@@ -173,9 +269,9 @@ class ParseIntoCreate:
             for valors in self.real_list:
                 # Do not count [] empty list
                 if isinstance(masters, str):
-                    if masters in valors[1] and not valors[0]:
+                    if masters == valors[1] and not valors[0]:
                         list_valors.append([masters, True])
-                    elif masters in valors[1] and valors[0]:
+                    if masters == valors[1] and valors[0]:
                         list_valors.append([masters, False])
 
         return list_valors

@@ -52,7 +52,74 @@ n
 
         return self.data["addfunction"].format(arg1, arg1)
 
+    def add_widgets_to_master_widgets_func(self, arg1):
+        '''
+        This function adds function in init so it launches itself at start
+        This function adds widgets to arg1.
 
+        arg1 is the name of the function.
+        arg1 should look like : self.add_"function_name"
+
+        '''
+
+        return self.data["addfuncmaster"].format(arg1, arg1)
+
+    def add_master_function(self, arg1):
+        '''
+        This function adds master function arg1.
+
+        Takes only one arg
+        '''
+
+        return self.data["masterfunctionname"].format(arg1, arg1)
+
+    def add_widgets_function(self, arg1):
+        '''
+        This function adds widgets to arg1
+
+        Takes only one arg as master widget of slave widgets
+        '''
+
+        return self.data["widgetfunctionname"].format(arg1, arg1)
+
+    def add_identify_id_class_master(self, arg1, arg2, arg3=""):
+        '''
+        This function creates widget's name and instanciates it.
+
+        It gives his name as arg1
+        arg2 is his class
+        If it is not a master widget (that doesn't instanciates from Tk()),
+        you can give arg3 as his master widget
+        '''
+
+        return self.data["functionidandclass"].format(arg1, arg2, arg3)
+
+    def add_widget_conf(self, arg1, arg2):
+        '''
+        This function adds config to the current widget.
+
+        arg1 is the name of widget
+        arg2 is the configuration.
+
+        args should match this :
+        self.{arg1}.config({arg2})
+        '''
+
+        return self.data["widgetconfig"].format(arg1, arg2)
+
+    def add_widget_loc(self, arg1, arg2):
+        '''
+        This function adds placement to the current widget.
+
+        arg1 is the name of widget
+        arg2 is its placement
+
+        args should match this:
+        self.{arg1}.{arg2}
+
+        '''
+
+        return self.data["widgetplace"].format(arg1, arg2)
 
 if __name__ == '__main__':
     print("This is a constructor class, made for ParseIntoCreate class. \

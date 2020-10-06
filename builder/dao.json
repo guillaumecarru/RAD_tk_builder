@@ -1,5 +1,11 @@
 {
     "introduction":"import tkinter as tk\n\n# all strings are located in that file\nimport {}\n",
     "classcreation":"\nclass ConvertedFile(tk.Tk):\n    \"\"\"To activate this tkinter window, instanciate it, then use the launch() function on\n    your object\"\"\"\n\n    def __init__(self):\n        # Building main window\n        tk.Tk.__init__(self)\n        self.title({})\n\n",
-    "addfunction":"        # Add self.{} as master\n        self.add_{}()\n\n"
+    "addfunction":"        # Add self.{} as master\n        self.add_{}()\n\n",
+    "addfuncmaster":"        # Add widgets to self.{}\n        self.add_widgets_to_{}()\n\n",
+    "masterfunctionname":"    def add_{}(self):\n        '''Add master widget called self.{}'''\n\n",
+    "widgetfunctionname":"    def add_widgets_to_{}(self):\n        '''Add widgets to self.{}'''\n\n",
+    "functionidandclass":"        self.{} = {}({})\n",
+    "widgetconfig":"        self.{}.config{}\n",
+    "widgetplace":"        self.{}.{}\n"
 }

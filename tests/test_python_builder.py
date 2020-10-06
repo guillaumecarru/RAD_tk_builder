@@ -1,6 +1,8 @@
 import pytest
 from builder.python_builder import ParseIntoCreate
 
+parse = ParseIntoCreate("testdocument.py", "tests/file_xml_for_tests.ui")
+
 class TestParseIntoCreate:
     '''
     Tests for ParseIntoCreate class
@@ -9,7 +11,6 @@ class TestParseIntoCreate:
     def test_init_is_working(self):
         # This will test that __init__ is working properly
         # Testing that xml_converter class is converting properly
-        parse = ParseIntoCreate("testdocument.py", "tests/file_xml_for_tests.ui")
 
         assert {'class': 'tk.Frame',
                 'id': 'frame_1',
@@ -40,7 +41,6 @@ class TestParseIntoCreate:
             [[], 'frame_1', 'tk.Frame', ["(height='200', width='200')"], ["pack(side='top')"]],
             ['frame_1', 'button_1', 'tk.Button', ['(text={})', 'button_1'], ["pack(side='top')"]]]
 
-        parse = ParseIntoCreate("testdocument.py", "tests/file_xml_for_tests.ui")
 
         assert list_for_test == parse.real_list
 
@@ -48,14 +48,12 @@ class TestParseIntoCreate:
         # This test makes sure creating_new_dicts
         # fonctions properly
 
-        parse = ParseIntoCreate("testdocument.py", "tests/file_xml_for_tests.ui")
         assert type(parse.realdict) is dict
 
     def test_getting_widgets(self):
         # This test makes sure getting_master_widgets
         # is working properly
 
-        parse = ParseIntoCreate("testdocument.py", "tests/file_xml_for_tests.ui")
         assert parse.getting_master_widgets() == [['frame_1', True]]
 
     ###############
