@@ -117,7 +117,8 @@ class ParseIntoCreate:
         # Fullfilling self.newfile with data
         with open(self.newfile, "w") as newdoc:
             #Documentation
-            newdoc.write(self.constructor.create_stock_class(self.defaultconf))
+            # Removing .py in self.defaultconf using [:-3]
+            newdoc.write(self.constructor.create_stock_class(self.defaultconf[:-3]))
 
             #Creating class and init
             newdoc.write(self.constructor.create_class_and_init(DEFAULTTITLE))
@@ -145,7 +146,20 @@ class ParseIntoCreate:
                 self.creating_function(self.who_s_your_master(widgets[0]),
                                        newdoc)
 
+            # Add launch function
+            newdoc.write(self.constructor.add_launch_function())
+
+            # Add if name == main function
+            newdoc.write(self.constructor.add_name_eq_main())
+
+        # Finally
         newdoc.close()
+
+        ###########################
+        # Now we can finally
+        # create document for conf
+        ###########################
+        self.creating_conf_file()
 
     def who_s_your_master(self, arg1, master=False):
         '''
@@ -174,7 +188,6 @@ class ParseIntoCreate:
         # Return new_list once completed
         return new_list
 
-
     def creating_function(self, list_widgets, document, master=False):
         '''
         This function helps creating_new_file function.
@@ -201,11 +214,14 @@ class ParseIntoCreate:
                 document.write(self.constructor.add_identify_id_class_master(widgets[1],
                                                                              widgets[2]))
 
-            # Add arg3 if master = False
-            elif not master:
+            # Add arg3 if master = False and widgets[0] is not null
+            elif not master and widgets[0]:
                 document.write(self.constructor.add_identify_id_class_master(widgets[1],
                                                                              widgets[2],
-                                                                             widgets[0]))
+                                                                             "self." + widgets[0]))
+            elif not master and not widgets[0]:
+                document.write(self.constructor.add_identify_id_class_master(widgets[1],
+                                                                             widgets[2]))
 
 
             if widgets[3]:
@@ -213,7 +229,7 @@ class ParseIntoCreate:
                 if len(widgets[3]) > 1:
                     self.conf_text.append([self.cap_text(widgets[1]), widgets[3][1]])
                     document.write(self.constructor.add_widget_conf(widgets[1],
-                                                                    widgets[3][0].format(self.cap_text(widgets[1]))))
+                                                                    widgets[3][0].format("text." + self.cap_text(widgets[1]))))
 
                 elif len(widgets[3]) == 1:
                     document.write(self.constructor.add_widget_conf(widgets[1],
@@ -222,6 +238,7 @@ class ParseIntoCreate:
             if widgets[4]:
                 document.write(self.constructor.add_widget_loc(widgets[1],
                                                                widgets[4][0]))
+
                 # If _propagate == False
                 # Add place_propagate(0)
                 if len(widgets[4]) > 1:
@@ -231,7 +248,6 @@ class ParseIntoCreate:
             # Add spaces between widgets / functions
             # for each iteration
             document.write("\n")
-
 
     def cap_text(self, arg):
         '''
@@ -275,6 +291,40 @@ class ParseIntoCreate:
                         list_valors.append([masters, False])
 
         return list_valors
+
+    def creating_conf_file(self):
+        '''
+        This function is going to create a conf file.
+        Data are stocked in the self.conf_text list
+        They are gathered during the writing of newfile
+        process, in the creating_function function.
+
+        conf file name is by default conf.py
+        Can be changed during class creation, by changing
+        defaultconf arg
+        '''
+
+        # name of conf file is
+        # self.defaultconf
+
+        # name of stocked list text is
+        # self.conf_text
+
+        # Text is stocked like this :
+        # [["LABEL_FRAME_TEXT", "some text"],...]
+
+        # new file = self.newfile
+
+        # Fullfilling self.defaultconf with data
+        with open(self.defaultconf, "w") as newconf:
+            # Documentation
+            newconf.write(self.constructor.add_intro_conf(self.newfile))
+
+            # Adding all variables and text for self.newfile file
+            for text in self.conf_text:
+                newconf.write(self.constructor.add_text(text[0], text[1]))
+
+        newconf.close()
 
 if __name__ == '__main__':
     # test to make sure everything is working properly

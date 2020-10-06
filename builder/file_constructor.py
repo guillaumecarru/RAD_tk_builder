@@ -121,6 +121,46 @@ n
 
         return self.data["widgetplace"].format(arg1, arg2)
 
+    def add_launch_function(self):
+        '''
+        This function adds the "launch" function in
+        the new document. No args needed.
+        '''
+
+        return self.data["launchfunction"]
+
+    def add_name_eq_main(self):
+        '''
+        This function adds if__name__ == '__main__'
+        This allow the tkinter window to launch automatically if
+        called from the name of document.
+
+        No argument needed.
+        '''
+
+        return self.data["ifnameeqmain"]
+
+    def add_intro_conf(self, arg1):
+        '''
+        This function adds intro to conf file
+
+        Takes name of tk file as arg1
+        '''
+
+        return self.data["introconf"].format(arg1)
+
+    def add_text(self, arg1, arg2):
+        '''
+        This function adds text in conf file
+        for new_file configuration
+
+        Takes arg1 as name of variable
+        arg2 is the text
+
+        '''
+
+        return self.data["addtext"].format(arg1, arg2)
+
 if __name__ == '__main__':
     print("This is a constructor class, made for ParseIntoCreate class. \
 For more informations on how to use this program, please consult README.md \

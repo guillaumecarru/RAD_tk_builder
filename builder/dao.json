@@ -1,5 +1,5 @@
 {
-    "introduction":"import tkinter as tk\n\n# all strings are located in that file\nimport {}\n",
+    "introduction":"import tkinter as tk\n\n# all strings are located in that file\nimport {} as text\n",
     "classcreation":"\nclass ConvertedFile(tk.Tk):\n    \"\"\"To activate this tkinter window, instanciate it, then use the launch() function on\n    your object\"\"\"\n\n    def __init__(self):\n        # Building main window\n        tk.Tk.__init__(self)\n        self.title({})\n\n",
     "addfunction":"        # Add self.{} as master\n        self.add_{}()\n\n",
     "addfuncmaster":"        # Add widgets to self.{}\n        self.add_widgets_to_{}()\n\n",
@@ -7,5 +7,9 @@
     "widgetfunctionname":"    def add_widgets_to_{}(self):\n        '''Add widgets to self.{}'''\n\n",
     "functionidandclass":"        self.{} = {}({})\n",
     "widgetconfig":"        self.{}.config{}\n",
-    "widgetplace":"        self.{}.{}\n"
+    "widgetplace":"        self.{}.{}\n",
+    "launchfunction":"    def launch(self):\n        '''used as followed : app = ConvertedFile()\n        app=launch()'''\n        self.mainloop()\n\n",
+    "ifnameeqmain":"if __name__ == '__main__':\n    app = ConvertedFile()\n    app.launch()",
+    "introconf":"#######################################\n# This file contains all text         #\n# for {} file\n# Here you can change any             #\n# variables, like TITLE               #\n#                                     #\n# Have fun !                          #\n#######################################\n\n",
+    "addtext":"{} = '''{}'''\n"
 }
