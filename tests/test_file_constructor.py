@@ -1,6 +1,5 @@
 import pytest
 import json
-#import mock
 
 from builder.file_constructor import FileConstructor
 
@@ -17,7 +16,7 @@ class TestFileConstructor:
         # test create_stock_class
 
         assert ftest.create_stock_class("one") == "import tkinter as tk\n\
-\n# all strings are located in that file\nimport {}\n".format("one")
+\n# all strings are located in that file\nimport {} as text\n".format("one")
 
     def test_create_class_and_init(self):
         #test create_class_and_init

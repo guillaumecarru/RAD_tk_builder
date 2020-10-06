@@ -10,4 +10,4 @@ Consider reading the README.md file for more informations."
 ATTRIBERROR = "The file can't be read by xml reader. \n \
 Consider reading the README.md would be a nice idea !"
 
-DEFAULTTITLE = "'Change title in conf file'"
+DEFAULTTITLE = "Change title in conf file"

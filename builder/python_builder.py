@@ -121,7 +121,8 @@ class ParseIntoCreate:
             newdoc.write(self.constructor.create_stock_class(self.defaultconf[:-3]))
 
             #Creating class and init
-            newdoc.write(self.constructor.create_class_and_init(DEFAULTTITLE))
+            self.conf_text.append(["TITLE", DEFAULTTITLE])
+            newdoc.write(self.constructor.create_class_and_init("text."+"TITLE"))
 
             # Adding functions in init
             for widgets in widget_list:
@@ -227,6 +228,7 @@ class ParseIntoCreate:
             if widgets[3]:
                 # if there is text in properties
                 if len(widgets[3]) > 1:
+                    # Add text in conf_text list
                     self.conf_text.append([self.cap_text(widgets[1]), widgets[3][1]])
                     document.write(self.constructor.add_widget_conf(widgets[1],
                                                                     widgets[3][0].format("text." + self.cap_text(widgets[1]))))
@@ -303,17 +305,6 @@ class ParseIntoCreate:
         Can be changed during class creation, by changing
         defaultconf arg
         '''
-
-        # name of conf file is
-        # self.defaultconf
-
-        # name of stocked list text is
-        # self.conf_text
-
-        # Text is stocked like this :
-        # [["LABEL_FRAME_TEXT", "some text"],...]
-
-        # new file = self.newfile
 
         # Fullfilling self.defaultconf with data
         with open(self.defaultconf, "w") as newconf:
