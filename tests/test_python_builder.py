@@ -266,3 +266,52 @@ class TestParseIntoCreate:
         # Test if creating_new_file renders informations properly
         assert file.read() == 'padre\nid,class,self.padre\nid,notext\nid,nopropagate\n\n'
 
+    def test_creating_function_master(self, monkeypatch, tmpdir):
+        # Testing creating_function function.
+        # Makes sure it writes properly informations
+        # Test with master = True
+        # text = False
+        # propagate = False
+
+        # changing valors of self.constructor
+        class FakeConstructor:
+            def __init__(self):
+                pass
+
+            def add_master_function(self, arg1):
+                return "{}\n".format(arg1)
+
+            def add_widgets_function(self, arg1):
+                return "{}\n".format(arg1)
+
+            def add_identify_id_class_master(self, arg1, arg2, arg3=""):
+                return "{},{},{}\n".format(arg1, arg2, arg3)
+
+            def add_widget_conf(self, arg1, arg2):
+                return "{},{}\n".format(arg1, arg2)
+
+            def add_widget_loc(self, arg1, arg2):
+                return "{},{}\n".format(arg1, arg2)
+
+        # Attr FakeConstructor to python_builder
+        monkeypatch.setattr("builder.python_builder.FileConstructor",
+                            FakeConstructor)
+
+        #setup class
+        self.parse = ParseIntoCreate("newdocument.py")
+
+        # Open in temp dir
+        file = tmpdir.join("file.py")
+        self.parse.newfile = file.strpath
+
+        # list that's given as arg for creating_function
+        inc_list = [["padre", "id", "class", ["notext"], ["grid", "propa"]]]
+
+        # open file to test function
+        with open(file, "w") as fileinc:
+            # Run creating_function function
+            self.parse.creating_function(inc_list, fileinc, True)
+        fileinc.close()
+
+        # Test if creating_new_file renders informations properly
+        assert file.read() == 'id\nid,class,\nid,notext\nid,grid\nid,propa\n\n'

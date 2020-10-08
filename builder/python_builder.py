@@ -6,15 +6,18 @@
 
 import xml.etree.ElementTree as ET
 import errno
+import os.path
 
 try:
     from builder.xml_converter import XmlDictConfig
-    from builder.conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE
+    from builder.conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE, PYERROR,\
+    PYCONFERROR, PYERROREXISTS, PYCONFERROREXISTS
     from builder.file_constructor import FileConstructor
     from builder.recursive_packager import RecursivePackager
 except:
     from xml_converter import XmlDictConfig
-    from conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE
+    from conf import FILEERROR, ATTRIBERROR, DEFAULTTITLE, PYERROR,\
+    PYCONFERROR, PYERROREXISTS, PYCONFERROREXISTS
     from file_constructor import FileConstructor
     from recursive_packager import RecursivePackager
 
@@ -35,16 +38,16 @@ class ParseIntoCreate:
     Have fun !
     '''
 
-    def __init__(self, newfile, uifile="tests/template_ui_file.ui", defaultconf="conf.py"):
+    def __init__(self, newfile, uifile="tests/template_ui_file", defaultconf="conf"):
         # newfile is the file that this class will create
-        self.newfile = newfile
+        self.newfile = newfile + ".py"
 
         # ui file is the file that's going to be converted
-        self.uifile = uifile
+        self.uifile = uifile + ".ui"
 
         # defaultconf is the file that will be created and will include all
         # variables for newfile
-        self.defaultconf = defaultconf
+        self.defaultconf = defaultconf + ".py"
 
         # getting all informations from ui file
         try:
@@ -82,6 +85,21 @@ class ParseIntoCreate:
         #                              ]
         self.conf_text = []
 
+        # Adding erros if self.newfile or self.default_conf isn't .py
+        if self.newfile[-3:] != ".py":
+            print(PYERROR)
+            return
+        if self.defaultconf[-3:] != ".py":
+            print(PYCONFERROR)
+            return
+
+        # Adding erros if self.newfile or self.default_conf already exists
+        if os.path.isfile(self.newfile):
+            print(PYERROREXISTS)
+            return
+        if os.path.isfile(self.defaultconf):
+            print(PYCONFERROREXISTS)
+            return
 
     def creating_new_dicts(self):
         ''' This function is taking data inside xmldict

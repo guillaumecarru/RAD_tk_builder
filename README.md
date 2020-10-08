@@ -1,30 +1,39 @@
 # RAD_tk_builder
 
-[Read in english](LEEME.md)
+[Read in French](LEEME.md)
 
-## Bienvenue sur le projet RAD_tk_builder !
+## Welcome to the project RAD_tk_builder !
 
-`RAD_tk_builder` est un outil utilisant la [méthode RAD](https://en.wikipedia.org/wiki/Rapid_application_development) qui permet de générer du code python after le module `tkinter`.
+`RAD_tk_builder` is a [RAD tool](https://en.wikipedia.org/wiki/Rapid_application_development) that generates python code for `tkinter` module.
 
-Ce projet reprend l'éditeur d'interface du projet [pygubu-designer](https://github.com/alejandroautalan/pygubu-designer) de l'utilisateur [Alejandro Autalán](https://github.com/alejandroautalan).
+This project is complementary to [Alejandro Autalán](https://github.com/alejandroautalan)'s project [pygubu-designer](https://github.com/alejandroautalan/pygubu-designer).
 
-`RAD_tk_builder` convertit le fichier `xml` de `pybugu-designer` et le convertit en code python.
+`RAD_tk_builder` converts the `xml` file of `pybugu-designer` into python code.
 
 ## Installation
 
-RAD_tk_builder requiert Python >= 3
+RAD_tk_builder requires Python >= 3
 
+### Download tk_builder in a new repo
+
+```
+git clone https://github.com/JeanJdkJebuf/RAD_tk_builder.git
+
+```
+
+Install dependancies with pipenv (give your python version instead of x)
 ```
 pipenv install python 3.x
 ```
 
-## Utilisation
 
-`pygubu` contient deux versions :
+## Usage 
 
-- **l'éditeur d'interface** [pygubu-designer](https://github.com/alejandroautalan/pygubu-designer). qui vous permet de créer le fichier xml de manière graphique.
-- [pygubu core](https://github.com/alejandroautalan/pygubu) qui permet de charger et afficher le fichier xml.
+`pygubu` contains two modules:
 
-`RAD_tk_builder` permet quant à lui convertit le fichier xml en code python, permettant au développeur de modifier les éléments à sa guise.
+- **interface editor** [pygubu-designer](https://github.com/alejandroautalan/pygubu-designer). that helps you create the xml definition graphically.
+- [pygubu core](https://github.com/alejandroautalan/pygubu) that loads and build user interface defined in xml.
+
+`RAD_tk_builder` converts the `xml` file into python code, allowing the programmer to modify elements as he wishes.
 
 
