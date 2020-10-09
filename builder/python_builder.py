@@ -38,16 +38,16 @@ class ParseIntoCreate:
     Have fun !
     '''
 
-    def __init__(self, newfile, uifile="tests/template_ui_file", defaultconf="conf"):
+    def __init__(self, newfile, uifile="tests/template_ui_file.ui", defaultconf="conf.py"):
         # newfile is the file that this class will create
-        self.newfile = newfile + ".py"
+        self.newfile = newfile
 
         # ui file is the file that's going to be converted
-        self.uifile = uifile + ".ui"
+        self.uifile = uifile
 
         # defaultconf is the file that will be created and will include all
         # variables for newfile
-        self.defaultconf = defaultconf + ".py"
+        self.defaultconf = defaultconf
 
         # getting all informations from ui file
         try:
@@ -100,6 +100,9 @@ class ParseIntoCreate:
         if os.path.isfile(self.defaultconf):
             print(PYCONFERROREXISTS)
             return
+
+        # Running creating_new_file()
+        self.creating_new_file()
 
     def creating_new_dicts(self):
         ''' This function is taking data inside xmldict
