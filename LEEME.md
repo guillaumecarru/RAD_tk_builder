@@ -34,4 +34,31 @@ pipenv install python 3.x
 
 `RAD_tk_builder` permet quant à lui convertit le fichier xml en code python, permettant au développeur de modifier les éléments à sa guise.
 
+Voici les étapes nécessaires pour la création de votre fichier tkinter:
+1. Vous devez avoir un fichier xml, écrit par `pygubu-designer`
+2. Il faut être dans l'environnement virtuel du projet, donc à la racine de ce dernier, écrivez:
+```bash
+pipenv shell
+```
+3. Pour lancer le programme, utilisez le CLI fourni avec ce programme:
+```bash
+python main.py newdocument.py --uifile xmlfile.ui --conf_file conf.py
+Ou:
+- newdocument.py est le fichier qui va être créé, et qui contiendra le code tkinter.
+- --uifile prend le fichier xml en argument.
+- --conf_file prend en argument le fichier de configuration du fichier newdocument.py, qui va être créé en même temps que ce dernier.
 
+4. Voila, c'était tout ! Vous pouvez regarder votre nouveau fichier !
+
+### A propos du CLI
+-  Le nom des fichiers doivent contenir .ui ou .py
+
+-  Vous pouvez lancer le CLI seulement avec `newdocument.py`, il lancera alors un fichier.ui de démonstration.
+
+- Le fichier par défault de --conf_file est conf.py. Vous pouvez le CLI sans cette option si le nom de ce fichier vous convient.
+
+- Le launcher ne marchera pas si le fichier `newdocument.py` (dans l'exemple plus haut) existe déjà au sein de la racine du projet. Même chose pour l'option --conf_file.
+
+## Annexe
+
+Si vous avez une question concernant ce projet, n'hésitez pas à me contacter par mail.
