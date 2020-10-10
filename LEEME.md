@@ -43,6 +43,7 @@ pipenv shell
 3. Pour lancer le programme, utilisez le CLI fourni avec ce programme:
 ```bash
 python main.py newdocument.py --uifile xmlfile.ui --conf_file conf.py
+```
 Ou:
 - newdocument.py est le fichier qui va être créé, et qui contiendra le code tkinter.
 - --uifile prend le fichier xml en argument.
