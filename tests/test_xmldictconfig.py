@@ -1,5 +1,8 @@
-import pytest
+'''
+Tests for XmlDictConfig class
+'''
 import xml.etree.ElementTree as ET
+import pytest
 
 from builder.xml_converter import XmlDictConfig
 

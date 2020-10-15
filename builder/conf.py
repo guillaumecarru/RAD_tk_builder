@@ -1,8 +1,6 @@
-#############################################################################################
-#                                                                                           #
-# This file contains all variables used for the classes.                                    #
-#                                                                                           #
-#############################################################################################
+'''
+This file contains all variables used for the classes
+'''
 
 FILEERROR = "The file you added isn't a .ui file. \n \
 Consider reading the README.md file for more informations."

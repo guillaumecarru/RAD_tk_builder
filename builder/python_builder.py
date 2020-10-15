@@ -1,8 +1,8 @@
-#############################################################################################
-# Class that gathers informations from XmlDictConfig class                                  #
-# This class will parse all informations stacked up in XmlDictConfig instance               #
-# and will create a file based of it.                                                       #
-#############################################################################################
+'''
+Class that gathers informations from XmlDictConfig class
+This class will parse all informations stacked up in XmlDictConfig instance
+and will create a file based of it.
+'''
 
 import xml.etree.ElementTree as ET
 import errno
@@ -22,10 +22,9 @@ except:
     from recursive_packager import RecursivePackager
 
 class ParseIntoCreate:
-    '''
-    This class is meant to create a tkinter code.
-    It takes as argument uifile a .ui file, created on pygubu-designer
-    It will convert and create a new document coded in python in newfile
+    """This class is meant to create a tkinter code. It takes as argument
+    uifile a .ui file, created on pygubu-designer It will convert and create a
+    new document coded in python in newfile.
 
     if you don't give uifile any argument, it will load a default template
     you can consult in your target path.
@@ -36,7 +35,7 @@ class ParseIntoCreate:
 
     For more informations, please consult the README.md file.
     Have fun !
-    '''
+    """
 
     def __init__(self, newfile, uifile="tests/template_ui_file.ui", defaultconf="conf.py"):
         # newfile is the file that this class will create
@@ -105,13 +104,13 @@ class ParseIntoCreate:
         self.creating_new_file()
 
     def creating_new_dicts(self):
-        ''' This function is taking data inside xmldict
-        and converts them into a new dictionnary.
-        XmlDictConfig looks like a dictionnary, but it
-        renders an object.
-        This class also prevents the code from being spread
-        out in the new file.
-        '''
+        """This function is taking data inside xmldict and converts them into a
+        new dictionnary.
+
+        XmlDictConfig looks like a dictionnary, but it renders an
+        object. This class also prevents the code from being spread out
+        in the new file.
+        """
 
         # removing useless data
         self.xmldict = self.xmldict["object"]
@@ -127,11 +126,8 @@ class ParseIntoCreate:
             self.realdict[keys] = self.xmldict[keys]
 
     def creating_new_file(self):
-        '''
-        This function takes self.realdict datas
-        and converts them into code, using conf.py file
-        as database
-        '''
+        """This function takes self.realdict datas and converts them into code,
+        using conf.py file as database."""
 
         widget_list = self.getting_master_widgets()
 
@@ -184,14 +180,12 @@ class ParseIntoCreate:
         self.creating_conf_file()
 
     def who_s_your_master(self, arg1, master=False):
-        '''
-        This function takes arg1, parses self.real_list and
-        returns a list only containing widgets that have arg1
-        as master.
+        """This function takes arg1, parses self.real_list and returns a list
+        only containing widgets that have arg1 as master.
 
-        Optionnal argument as "master" is given if we're looking
-        for all informations of arg1 only.
-        '''
+        Optionnal argument as "master" is given if we're looking for all
+        informations of arg1 only.
+        """
 
         new_list = []
 
@@ -211,14 +205,12 @@ class ParseIntoCreate:
         return new_list
 
     def creating_function(self, list_widgets, document, master=False):
-        '''
-        This function helps creating_new_file function.
-        It parses RecursivePackager result to create
-        a function for the new file
+        """This function helps creating_new_file function. It parses
+        RecursivePackager result to create a function for the new file.
 
-        Change master to True ONLY if you need to create
-        a master function.
-        '''
+        Change master to True ONLY if you need to create a master
+        function.
+        """
 
         # If master = True
         # Unique case
@@ -273,26 +265,22 @@ class ParseIntoCreate:
             document.write("\n")
 
     def cap_text(self, arg):
-        '''
-        This function takes arg and converts it to ARG_TEXT
+        """This function takes arg and converts it to ARG_TEXT.
 
         This function is usefull for the conf.py text.
-        '''
+        """
 
         return arg.upper() + "_TEXT"
 
     def getting_master_widgets(self):
-        '''
-        This function works with creating_functions_for_new_file
-        It returns a list with all master widgets.
-        Initial list is self.real_list
+        """This function works with creating_functions_for_new_file It returns
+        a list with all master widgets. Initial list is self.real_list.
 
         Returns valors like this : [[example_widget, True]...]
         True means example_widget is a master widget that instanciates
         directly from tk()
         False means example_widget is an instance of another widget.
-
-        '''
+        """
 
         return_list = []
 
@@ -316,16 +304,13 @@ class ParseIntoCreate:
         return list_valors
 
     def creating_conf_file(self):
-        '''
-        This function is going to create a conf file.
-        Data are stocked in the self.conf_text list
-        They are gathered during the writing of newfile
+        """This function is going to create a conf file. Data are stocked in
+        the self.conf_text list They are gathered during the writing of newfile
         process, in the creating_function function.
 
-        conf file name is by default conf.py
-        Can be changed during class creation, by changing
-        defaultconf arg
-        '''
+        conf file name is by default conf.py Can be changed during class
+        creation, by changing defaultconf arg
+        """
 
         # Fullfilling self.defaultconf with data
         with open(self.defaultconf, "w") as newconf:

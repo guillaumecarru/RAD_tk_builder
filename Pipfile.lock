@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "af13e2008f320b16ba90942156a5fd3c96bfcb50a6c4e3daad751714bb5fdda2"
+            "sha256": "b8f01b06c502ce18d17338d593e85f5500226d60049cac6a29ad68890d3d61b0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -81,10 +81,9 @@
         },
         "iniconfig": {
             "hashes": [
-                "sha256:80cf40c597eb564e86346103f609d74efce0f6b4d4f30ec8ce9e2c26411ba437",
-                "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"
+                "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"
             ],
-            "version": "==1.0.1"
+            "version": "==1.1.1"
         },
         "packaging": {
             "hashes": [
@@ -152,6 +151,13 @@
             ],
             "version": "==20.2.0"
         },
+        "docformatter": {
+            "hashes": [
+                "sha256:d8db663665becccac75737b2635a06076f2c832bf861322a7bfc512f0a9fa7e3"
+            ],
+            "index": "pypi",
+            "version": "==1.3.1"
+        },
         "importlib-metadata": {
             "hashes": [
                 "sha256:77a540690e24b0305878c37ffd421785a6f7e53c8b5720d211b211de8d0e95da",
@@ -162,10 +168,9 @@
         },
         "iniconfig": {
             "hashes": [
-                "sha256:80cf40c597eb564e86346103f609d74efce0f6b4d4f30ec8ce9e2c26411ba437",
-                "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"
+                "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"
             ],
-            "version": "==1.0.1"
+            "version": "==1.1.1"
         },
         "packaging": {
             "hashes": [
@@ -224,6 +229,12 @@
                 "sha256:bda89d5935c2eac546d648028b9901107a595863cb36bae0c73ac804a9b4ce88"
             ],
             "version": "==0.10.1"
+        },
+        "untokenize": {
+            "hashes": [
+                "sha256:3865dbbbb8efb4bb5eaa72f1be7f3e0be00ea8b7f125c69cbd1f5fda926f37a2"
+            ],
+            "version": "==0.1.1"
         },
         "zipp": {
             "hashes": [

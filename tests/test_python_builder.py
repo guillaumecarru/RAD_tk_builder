@@ -1,12 +1,14 @@
+'''
+Tests for ParseIntoCreate Class
+'''
+
 import pytest
 from builder.python_builder import ParseIntoCreate
 
 
 
 class TestParseIntoCreate:
-    '''
-    Tests for ParseIntoCreate class
-    '''
+    """Tests for ParseIntoCreate class."""
     def setup_method(self):
         self.parse = ParseIntoCreate("testdocument.py", "tests/file_xml_for_tests.ui")
 

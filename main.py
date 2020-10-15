@@ -38,10 +38,8 @@ for newfile")
 @click.argument("newfile")
 
 def createdoc(newfile, uifile, conf_file):
-    """
-    \b
-    This program works with pygubu-designer.
-    For more informations on pygubu, please consult README.md
+    """\b This program works with pygubu-designer. For more informations on
+    pygubu, please consult README.md.
 
     \b
     This CLI takes as argument the file that's going to be created.

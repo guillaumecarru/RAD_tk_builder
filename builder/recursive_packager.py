@@ -1,9 +1,9 @@
-#############################################################################################
-# This class takes a dictionnary as arg                                                     #
-# Converts it into a list                                                                   #
-# This list will contain args that will be given to FileConstructor class                   #
-# This list allows to build the core of the new file                                        #
-#############################################################################################
+'''
+This class takes a dictionnary as arg
+Converts it into a list
+This list will contain args that will be given to FileConstructor class
+This list allows to build the core of the new file
+'''
 
 class RecursivePackager:
     '''
@@ -31,9 +31,8 @@ class RecursivePackager:
         self.recursive_list_creator(self.running_list[0], self.master_list)
 
     def recursive_list_creator(self, curr_dict_iteration, master_widget):
-        '''
-        This is the main function of the class.
-        It allows to convert curr_iteration into a list.
+        """This is the main function of the class. It allows to convert
+        curr_iteration into a list.
 
         master_widget is the master's widget id. Usefull for writing objects.
 
@@ -57,7 +56,7 @@ class RecursivePackager:
 
         layout_valors are always lists, even if there is only one valor
         properties_valors are always lists, even if there is no text.
-        '''
+        """
 
         # Check if it's dictionnary or list
         if isinstance(curr_dict_iteration, list):
@@ -103,13 +102,12 @@ class RecursivePackager:
             self.recursive_list_creator(self.running_list[0], self.master_list[0])
 
     def widget_list_compacter(self, dictio):
-        '''
-        This function take dictio as arg, and creates a fully fonctionnal list
-        out of it
+        """This function take dictio as arg, and creates a fully fonctionnal
+        list out of it.
 
-        dictio should be one full instance of a widget and contain "id" and
-        "layout" valors.
-        '''
+        dictio should be one full instance of a widget and contain "id"
+        and "layout" valors.
+        """
         # Temporary list that will stock informations and return them once
         # gathered
         list_for_current_iteration = []
@@ -146,9 +144,8 @@ class RecursivePackager:
         return list_for_current_iteration
 
     def creating_properties_valors(self, dict_or_list):
-        '''
-        This function converts dictionnary "properties" into writable code
-        '''
+        """This function converts dictionnary "properties" into writable
+        code."""
 
         # list that will stock informations and give it to list_for_current_iteration
         creating_properties = []
@@ -195,9 +192,8 @@ class RecursivePackager:
         return creating_properties
 
     def creating_layout_valors(self, layout_data):
-        '''
-        This function converts dictionnary/list "valors" into writable code
-        '''
+        """This function converts dictionnary/list "valors" into writable
+        code."""
 
         # list that will stock informations and give it to
         # list_for_current_iteration
@@ -243,9 +239,7 @@ class RecursivePackager:
         return creating_layout
 
     def return_converted_list(self):
-        '''
-        This function returns self.returned_list
-        '''
+        """This function returns self.returned_list."""
 
         return self.returned_list
 
